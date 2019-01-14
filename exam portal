@@ -1,0 +1,247 @@
+//aim: exam portal
+//developer:  Yash mathur
+
+#include<stdio.h>
+#include<time.h>
+#include<string.h>
+void read();
+void write();
+void fourth();
+int main()
+{
+    int choice=0;
+    printf("\t\t\t\tWelcome to the portal\n");
+    printf("\n\n   >>>  enter (1) for adding extra questions\n");
+    printf("\n   >>>   enter (2) for changing questions\n");
+    printf("\n   >>>   enter (3) for adding new questions\n");
+    printf("\n   >>>   enter (4) for having test\n");
+    scanf("%d",&choice);
+    switch(choice)
+    {
+    case 1:
+         write();
+         break;
+    case 2:
+         second();
+         break;
+    case 3:
+        third();
+    case 4:
+        fourth();
+        break;
+    }
+}
+void write()
+{
+    char str[90],ch='y';
+    int ctr=0,i;
+    FILE *ptr,*ptr2;
+    ptr=fopen("questions.txt","a+");
+    while(ch=='y'||ch=='Y')
+    {
+      printf("enter question\n");
+      fseek(stdin,0,SEEK_END);          //buffer clear
+    gets(str);
+    fprintf(ptr,"%s\n",str);
+    for(i=1;i<5;i++)
+    {
+        printf("enter option\n");
+        gets(str);
+        fprintf(ptr,"%s     ",str);
+    }
+    fprintf(ptr,"\n");
+     printf("enter correct answer\n");
+    gets(str);
+    ptr2=fopen("answers.txt","a+");
+    fprintf(ptr2,"%s\n",str);
+    fclose(ptr2);
+    ctr++;
+    printf("do you want to enter more questions\n");
+    scanf("%c",&ch);
+    }
+    if(ctr>0)
+    {
+        printf("thanks for adding\n");
+    }
+    fclose(ptr);
+}
+void read()
+{
+     char str[90];
+    FILE *ptr;
+    ptr=fopen("questions.txt","r");
+   while (fgets ( str, sizeof str, ptr ) != NULL)
+    {
+    fputs(str,stdout);
+    }
+    fclose(ptr);
+}
+void second()
+{
+    int ctr=1,ctr2=1,flag=0,num=0,h=0;          //ctr1 is for questions.txt while ctr2 is for answr.txt
+    printf("enter question number to be change");
+    scanf("%d",&num);
+    int num2=num;               //num2 is for changing thecorrect answer in answer.txt
+    num=num+(num-1);
+        char str[90];
+    FILE *ptr,*ptr2;
+    ptr2=fopen("questions2.txt","a+");
+    ptr=fopen("questions.txt","r+");
+   while (fgets ( str, sizeof str, ptr ) != NULL)
+    {
+        if(ctr==num||ctr==num+1)
+        {
+               if(h==0)
+                {
+                printf("the question was\t");               //the statements under if are printing two times thats i am using h
+                fputs(str,stdout);
+                printf("\n");
+                printf("question is deleted \n");
+                flag=1;
+                h++;
+               ctr++;
+               }
+        }
+        else
+       {
+        fprintf(ptr2,"%s",str);
+        ctr++;
+        }
+    }
+    if(flag==0)
+    {
+        printf("invalid question number");
+
+    }
+    fclose(ptr);
+    fclose(ptr2);
+    remove("questions.txt");
+    rename("questions2.txt","questions.txt");
+    ptr2=fopen("answers2.txt","w");
+    ptr=fopen("answers.txt","a+");
+    while (fgets ( str, sizeof str, ptr ) != NULL)
+    {
+    if(ctr2==num2)
+    {
+        ctr2++;
+    }
+    else{
+        fprintf(ptr2,"%s",str);
+        ctr2++;
+    }
+    }
+    remove("answer.txt");
+    rename("answer2.txt","answer.txt");
+}
+
+    void third()
+    {
+        char str[90],ch='y';
+    int ctr=0,i;
+    FILE *ptr,*ptr2;
+    ptr=fopen("questions.txt","w");
+    while(ch=='y'||ch=='Y')
+    {
+      printf("enter question\n");
+      fseek(stdin,0,SEEK_END);          //buffer clear
+    gets(str);
+    fprintf(ptr,"%s\n",str);
+    for(i=1;i<5;i++)
+    {
+        printf("enter option no %d",i);
+        gets(str);
+        fprintf(ptr,"%s     ",str);
+    }
+    fprintf(ptr,"\n");
+    printf("enter correct answer\n");
+    gets(str);
+    ptr2=fopen("answers.txt","a+");
+    fprintf(ptr2,"%s\n",str);
+    fclose(ptr2);
+    ctr++;
+    printf("do you want to enter more questions\n");
+    scanf("%c",&ch);
+    }
+    if(ctr>0)
+    {
+        printf("thanks for adding\n");
+    }
+    fclose(ptr);
+    }
+    void fourth()
+{
+    int ctr=0,ctr4=1;
+    int score=0;
+    char str[90];int i;
+    FILE *ptr,*ptr2;
+    ptr=fopen("questions.txt","r");
+    while (fgets ( str, sizeof str, ptr ) != NULL)
+        {
+        ctr++;
+        }
+    fclose(ptr);
+    srand(time(0));
+    int ctr2=ctr/2;                 //ctr2 denotes number of questions in file
+    for(i=1;i<=ctr2;i++)
+            {
+                int ran=(rand()%(ctr2-1+1))+1;
+                int    ran2=ran;                               //ran2 is for answers
+                ran=ran+(ran-1);                    //ran is for questions
+                 ptr=fopen("questions.txt","r");
+                int ctr3=1;
+                while (fgets ( str, sizeof str, ptr ) != NULL)
+                    {
+                        if(ctr3==ran)
+                        {
+                            printf("%s",str);
+                            ctr3++;
+                        }
+
+                        else if(ctr3==ran+1)
+                        {
+                        printf("%s",str);
+                        break;
+                        }
+                        else
+                        {
+                          ctr3++;
+                        }
+                    }
+        fclose(ptr);
+        printf("enter anwer");
+        char str2[90];
+        fseek(stdin,0,SEEK_END);          //buffer clear
+        fgets(str2,90,stdin);               //here we cant use gets because it cant store \n by default
+        ctr4=1;
+        ptr2=fopen("answers.txt","a+");
+        while (fgets ( str, sizeof str, ptr2 ) != NULL)
+                    {
+                        if(ctr4==ran2)                                      //ctr4 counter is for answer.txt
+                    {
+                                if(strcmp(str2,str)==0)
+                                {
+                                    printf("you are correct");
+                                    score++;
+                                    getchar();
+                                    ctr4++;
+                                }
+                                else
+                                {
+                                     printf("you are incorrect");
+                                     getchar();
+                                     ctr4++;
+                                }
+                    }
+                    else
+                    {
+                        ctr4++;
+                    }
+                     fseek(stdin,0,SEEK_END);
+                    }
+                     fseek(stdin,0,SEEK_END);
+                    fclose(ptr2);
+            }
+            printf("\nyou scored =%d ,outof %d",score,ctr2);
+
+
+}
