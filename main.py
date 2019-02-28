@@ -4,7 +4,15 @@
 
 def first():
     ctr=0
+    while 1:
+        
     uname=input("enter username")
+    if uname.endswith("@jester.com"):
+        break
+    else:
+        
+        pass
+        
     uname2=uname+"\n"
     with open('login.txt','r') as f:
         for line in f:
