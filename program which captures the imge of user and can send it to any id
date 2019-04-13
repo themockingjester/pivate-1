@@ -1,0 +1,23 @@
+import pyautogui
+
+import os,time
+os.startfile('"C:\Program Files (x86)\Dell Webcam\Dell Webcam Central\WebcamDell2.exe"')
+time.sleep(17)
+pyautogui.click(x=540, y=506)
+time.sleep(0.8)
+os.system("taskkill /f /im WebcamDell2.exe")
+import shutil
+m="C:\\Users\dominator\Documents\Dell WebCam Central\Snap Photos"
+
+
+path, dirs, files = next(os.walk("C:\\Users\dominator\Documents\Dell WebCam Central\Snap Photos"))
+k=len(files)
+k-=1
+pl = list(files)
+
+os.chdir("C:\\Users\dominator\Documents\Dell WebCam Central\Snap Photos")
+m+="\\"
+m+=pl[k]
+os.chdir("C:\\")
+shutil.move(m, 'C:\egs')
+
